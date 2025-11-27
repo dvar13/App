@@ -9,7 +9,6 @@ import ChartHeartRate from '../components/ChartHeartRate';
 import ChartOxygen from '../components/ChartOxygen';
 import ForecastCard from '../components/ForecastCard';
 import GeneratePDF from '../components/GeneratePDF';
-import HealthRecommendations from '../components/HealthRecommendations';
 
 // API y adaptadores
 import { 
@@ -206,14 +205,6 @@ const Dashboard = () => {
             <ChartHeartRate data={analytics.metrics} />
             <ChartOxygen data={analytics.metrics} />
           </div>
-
-          {/*Recomendaciones de Salud */}
-          {analytics.last_reading && (
-            <HealthRecommendations 
-              heartRate={analytics.last_reading.heart_rate_avg}
-              oxygenSaturation={analytics.last_reading.oxygen_saturation_avg}
-            />
-          )}
 
           {/* Sección de pronóstico */}
           <ForecastCard 

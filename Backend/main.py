@@ -10,7 +10,6 @@ import time
 import os
 from dotenv import load_dotenv
 
-from health_recommendations import HealthRecommendationSystem
 from database.db import get_db, init_db, PlayerDB, MetricDB
 from models.models import Player, PlayerCreate, Metric, MetricCreate, PlayerMetrics, AnalyticsResponse, TeamStats
 
@@ -555,20 +554,6 @@ def get_aws_overall_analytics():
         result['pct_normal_o2'] = round((float(result['total_normal_o2'] or 0) / total) * 100, 2)
     
     return result
-
-    # Agrega estos endpoints
-    @app.post("/api/health/recommendations")
-    async def get_health_recommendations(
-        heart_rate: float,
-        oxygen_saturation: float,
-        player_name: str = "Jugador"
-    ):
-        report = HealthRecommendationSystem.generate_comprehensive_report(
-            hr_avg=heart_rate,
-            spo2_avg=oxygen_saturation,
-            player_name=player_name
-        )
-        return report
 
 if __name__ == "__main__":
     import uvicorn

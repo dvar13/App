@@ -12,29 +12,13 @@ import '../styles/charts.css';
 
 const ChartHeartRate = ({ data }) => {
   // Transformar datos para el gráfico
-  const chartData = data.map((d, index) => {
-    const date = new Date(d.timestamp);
-    const time = date.toLocaleTimeString('es-ES', { 
+  const chartData = data.map(d => ({
+    time: new Date(d.timestamp).toLocaleTimeString('es-ES', { 
       hour: '2-digit', 
-      minute: '2-digit',
-      second: '2-digit'
-    });
-    
-    return {
-      time: time,
-      bpm: d.heart_rate_avg,
-      fullTimestamp: d.timestamp,
-      index: index
-    };
-  });
-
-  // Si hay muchos datos, mostrar solo algunos labels en el eje X
-  const maxLabels = 10;
-  const step = Math.ceil(chartData.length / maxLabels);
-  
-  const formattedChartData = chartData.map((item, idx) => ({
-    ...item,
-    timeLabel: idx % step === 0 ? item.time : ''
+      minute: '2-digit' 
+    }),
+    bpm: d.heart_rate_avg,
+    fullTimestamp: d.timestamp
   }));
 
   // Tooltip personalizado
@@ -61,7 +45,7 @@ const ChartHeartRate = ({ data }) => {
       </h3>
       
       <ResponsiveContainer width="100%" height={300}>
-        <AreaChart data={formattedChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorBpm" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#a855f7" stopOpacity={0.8}/>
@@ -70,13 +54,10 @@ const ChartHeartRate = ({ data }) => {
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.3} />
           <XAxis 
-            dataKey="timeLabel"
+            dataKey="time" 
             stroke="#888" 
             style={{ fontSize: '0.85rem' }}
             tick={{ fill: '#888' }}
-            angle={-45}
-            textAnchor="end"
-            height={60}
           />
           <YAxis 
             stroke="#888" 
