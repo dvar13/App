@@ -12,13 +12,29 @@ import '../styles/charts.css';
 
 const ChartOxygen = ({ data }) => {
   // Transformar datos para el gráfico
-  const chartData = data.map(d => ({
-    time: new Date(d.timestamp).toLocaleTimeString('es-ES', { 
+  const chartData = data.map((d, index) => {
+    const date = new Date(d.timestamp);
+    const time = date.toLocaleTimeString('es-ES', { 
       hour: '2-digit', 
-      minute: '2-digit' 
-    }),
-    spo2: d.oxygen_saturation_avg,
-    fullTimestamp: d.timestamp
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    
+    return {
+      time: time,
+      spo2: d.oxygen_saturation_avg,
+      fullTimestamp: d.timestamp,
+      index: index
+    };
+  });
+
+  // Si hay muchos datos, mostrar solo algunos labels en el eje X
+  const maxLabels = 10;
+  const step = Math.ceil(chartData.length / maxLabels);
+  
+  const formattedChartData = chartData.map((item, idx) => ({
+    ...item,
+    timeLabel: idx % step === 0 ? item.time : ''
   }));
 
   // Tooltip personalizado
@@ -45,13 +61,16 @@ const ChartOxygen = ({ data }) => {
       </h3>
       
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <LineChart data={formattedChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" opacity={0.3} />
           <XAxis 
-            dataKey="time" 
+            dataKey="timeLabel"
             stroke="#888" 
             style={{ fontSize: '0.85rem' }}
             tick={{ fill: '#888' }}
+            angle={-45}
+            textAnchor="end"
+            height={60}
           />
           <YAxis 
             stroke="#888" 
