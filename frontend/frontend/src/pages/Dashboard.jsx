@@ -9,7 +9,7 @@ import ChartHeartRate from '../components/ChartHeartRate';
 import ChartOxygen from '../components/ChartOxygen';
 import ForecastCard from '../components/ForecastCard';
 import GeneratePDF from '../components/GeneratePDF';
-import HealthRecommendations from '../components/HealthRecommendations';
+import RecommendationsCard from '../components/RecommendationsCard';
 
 // API y adaptadores
 import { 
