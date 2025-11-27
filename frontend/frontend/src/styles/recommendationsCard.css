@@ -1,0 +1,236 @@
+/**
+ * recommendationsCard.css
+ * Estilos para el componente RecommendationsCard
+ */
+
+.recommendations-card {
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  animation: fadeIn var(--transition-normal);
+  margin-top: var(--spacing-3xl);
+}
+
+.recommendations-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.recommendations-icon {
+  animation: pulse 2s infinite;
+}
+
+/* Sin recomendaciones */
+.no-recommendations {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.no-recommendations-text {
+  margin: 0 0 var(--spacing-xl) 0;
+  color: var(--color-success);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.general-tips {
+  background-color: var(--color-bg-tertiary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.general-tips h4 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+
+.general-tips ul {
+  margin: 0;
+  padding-left: var(--spacing-xl);
+  color: var(--color-text-secondary);
+}
+
+.general-tips li {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+/* Lista de recomendaciones */
+.recommendations-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+.recommendation-item {
+  background-color: var(--color-bg-tertiary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid;
+  transition: all var(--transition-fast);
+}
+
+.recommendation-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.recommendation-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.recommendation-icon {
+  flex-shrink: 0;
+}
+
+.recommendation-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.recommendation-objective {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background-color: rgba(168, 85, 247, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.recommendation-objective strong {
+  color: var(--color-primary);
+}
+
+.recommendation-exercises {
+  margin-bottom: var(--spacing-lg);
+}
+
+.exercises-title {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exercises-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exercise-item {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  padding-left: var(--spacing-md);
+}
+
+.exercise-item:last-child {
+  margin-bottom: 0;
+}
+
+.exercise-bullet {
+  flex-shrink: 0;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--color-accent);
+}
+
+.recommendation-complement {
+  padding: var(--spacing-md);
+  background-color: rgba(0, 255, 136, 0.1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  border-left: 3px solid var(--color-accent);
+}
+
+.recommendation-complement strong {
+  color: var(--color-accent);
+}
+
+/* Footer */
+.recommendations-footer {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.recommendations-disclaimer {
+  margin: 0;
+  text-align: center;
+  color: var(--color-warning);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Animaciones */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.recommendation-item {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.recommendation-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.recommendation-item:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .recommendations-card {
+    padding: var(--spacing-lg);
+  }
+
+  .recommendations-title {
+    font-size: 1.2rem;
+  }
+
+  .recommendation-header {
+    gap: var(--spacing-sm);
+  }
+
+  .recommendation-title {
+    font-size: 1rem;
+  }
+
+  .exercise-item {
+    font-size: 0.9rem;
+  }
+
+  .recommendations-footer {
+    margin-top: var(--spacing-xl);
+  }
+}

@@ -16,6 +16,127 @@ import '../styles/generatePDF.css';
 const GeneratePDF = ({ analytics, player, isDisabled = false }) => {
   const [generating, setGenerating] = useState(false);
 
+  // Función para generar las recomendaciones en formato HTML para el PDF
+  const generateRecommendationsPDF = (anomalies, lastReading) => {
+    const recommendations = [];
+    
+    // Detectar problemas
+    const hasLowHR = anomalies.some(a => 
+      a.includes('bajo') || a.includes('low_heart_rate')
+    );
+    
+    const hasHighHR = anomalies.some(a => 
+      a.includes('elevado') || a.includes('high_heart_rate') || a.includes('Pico')
+    );
+    
+    const hasLowO2 = anomalies.some(a => 
+      a.includes('oxigenación') || a.includes('oxygen') || a.includes('crítico')
+    );
+    
+    const hasSuddenChanges = anomalies.some(a => 
+      a.includes('brusco') || a.includes('cambio')
+    );
+
+    // Generar HTML para ritmo cardíaco bajo
+    if (hasLowHR || (lastReading && lastReading.heart_rate_avg < 60)) {
+      recommendations.push(`
+        <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #3b82f6; font-size: 16px;">💙 Ritmo Cardíaco Bajo Detectado</h3>
+          <p style="margin: 0 0 15px 0; color: #888888; font-size: 13px;">
+            <strong style="color: #ffffff;">Objetivo:</strong> Estimular suavemente el sistema cardiovascular
+          </p>
+          <h4 style="margin: 0 0 10px 0; color: #00ff88; font-size: 14px;">Ejercicios Recomendados:</h4>
+          <ul style="margin: 0 0 15px 0; padding-left: 20px; color: #cccccc; font-size: 12px; line-height: 1.8;">
+            <li>Caminatas rápidas de 20–30 min, 4–5 veces por semana</li>
+            <li>Subir escaleras a ritmo moderado</li>
+            <li>Bicicleta estática suave (15–25 min)</li>
+            <li>Natación de baja intensidad</li>
+            <li>Rutinas de cardio ligero: jumping jacks lentos, marcha en el sitio</li>
+            <li>Entrenamientos de intervalos suaves: 1 min caminando rápido + 1 min despacio</li>
+          </ul>
+          <p style="margin: 0; color: #00ff88; font-size: 12px;">
+            <strong>Complemento:</strong> Mantén buena hidratación, alimentación balanceada y 7-8 horas de sueño
+          </p>
+        </div>
+      `);
+    }
+
+    // Generar HTML para ritmo cardíaco alto
+    if (hasHighHR || (lastReading && lastReading.heart_rate_avg > 100)) {
+      recommendations.push(`
+        <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border-left: 4px solid #a855f7; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #a855f7; font-size: 16px;">💜 Ritmo Cardíaco Elevado Detectado</h3>
+          <p style="margin: 0 0 15px 0; color: #888888; font-size: 13px;">
+            <strong style="color: #ffffff;">Objetivo:</strong> Reducir el estrés cardiovascular y promover la relajación
+          </p>
+          <h4 style="margin: 0 0 10px 0; color: #00ff88; font-size: 14px;">Ejercicios Recomendados:</h4>
+          <ul style="margin: 0 0 15px 0; padding-left: 20px; color: #cccccc; font-size: 12px; line-height: 1.8;">
+            <li>Ejercicios de respiración profunda (5-10 minutos)</li>
+            <li>Yoga restaurativo o meditación guiada</li>
+            <li>Caminatas lentas al aire libre</li>
+            <li>Estiramientos suaves de cuerpo completo</li>
+            <li>Técnicas de relajación muscular progresiva</li>
+            <li>Evitar cafeína y estimulantes</li>
+          </ul>
+          <p style="margin: 0; color: #00ff88; font-size: 12px;">
+            <strong>Complemento:</strong> Considera consultar con un profesional si persiste. Reduce el tiempo de pantalla antes de dormir
+          </p>
+        </div>
+      `);
+    }
+
+    // Generar HTML para oxigenación baja
+    if (hasLowO2 || (lastReading && lastReading.oxygen_saturation_avg < 95)) {
+      recommendations.push(`
+        <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border-left: 4px solid #00ff88; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #00ff88; font-size: 16px;">💚 Oxigenación Reducida Detectada</h3>
+          <p style="margin: 0 0 15px 0; color: #888888; font-size: 13px;">
+            <strong style="color: #ffffff;">Objetivo:</strong> Optimizar la respiración y capacidad pulmonar
+          </p>
+          <h4 style="margin: 0 0 10px 0; color: #00ff88; font-size: 14px;">Ejercicios Recomendados:</h4>
+          <ul style="margin: 0 0 15px 0; padding-left: 20px; color: #cccccc; font-size: 12px; line-height: 1.8;">
+            <li>Respiración diafragmática: inhalar por nariz 4 seg, exhalar lento 6 seg</li>
+            <li>Ejercicio de labios fruncidos (pursed-lip breathing)</li>
+            <li>Respiración cuadrada (box breathing): inhalar 4 seg – mantener 4 – exhalar 4 – mantener 4</li>
+            <li>Estiramientos torácicos para abrir el pecho</li>
+            <li>Yoga suave: posturas cobra, gato-camello, puente</li>
+            <li>Caminatas al aire libre en espacios bien ventilados</li>
+            <li>Ejercicios de fortalecimiento respiratorio: soplar por un pitillo en agua (10-15 min)</li>
+          </ul>
+          <p style="margin: 0; color: #00ff88; font-size: 12px;">
+            <strong>Complemento:</strong> Asegúrate de estar en espacios bien ventilados durante las sesiones de gaming
+          </p>
+        </div>
+      `);
+    }
+
+    // Generar HTML para cambios bruscos
+    if (hasSuddenChanges) {
+      recommendations.push(`
+        <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border-left: 4px solid #ffaa00; margin-bottom: 20px;">
+          <h3 style="margin: 0 0 10px 0; color: #ffaa00; font-size: 16px;">⚡ Variabilidad Inestable Detectada</h3>
+          <p style="margin: 0 0 15px 0; color: #888888; font-size: 13px;">
+            <strong style="color: #ffffff;">Objetivo:</strong> Estabilizar el ritmo cardíaco y mejorar la consistencia
+          </p>
+          <h4 style="margin: 0 0 10px 0; color: #00ff88; font-size: 14px;">Ejercicios Recomendados:</h4>
+          <ul style="margin: 0 0 15px 0; padding-left: 20px; color: #cccccc; font-size: 12px; line-height: 1.8;">
+            <li>Establecer horarios regulares de ejercicio</li>
+            <li>Técnicas de coherencia cardíaca (5 min, 3 veces al día)</li>
+            <li>Ejercicio aeróbico moderado y constante (no intervalos intensos)</li>
+            <li>Práctica regular de mindfulness o meditación</li>
+            <li>Mantener rutinas de sueño consistentes</li>
+            <li>Evitar cambios bruscos de actividad</li>
+          </ul>
+          <p style="margin: 0; color: #00ff88; font-size: 12px;">
+            <strong>Complemento:</strong> Monitorea tus patrones de actividad y descanso. Evita sesiones de gaming excesivamente largas sin pausas
+          </p>
+        </div>
+      `);
+    }
+
+    return recommendations.join('');
+  };
+
   const generatePDF = async () => {
     try {
       setGenerating(true);
@@ -149,15 +270,34 @@ const GeneratePDF = ({ analytics, player, isDisabled = false }) => {
 
           <!-- Anomalías Detectadas -->
           ${analytics.anomalies && analytics.anomalies.length > 0 ? `
-            <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border: 1px solid #ffaa00;">
+            <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border: 1px solid #ffaa00; margin-bottom: 30px;">
               <h2 style="margin: 0 0 15px 0; color: #ffaa00; font-size: 18px;">⚠️ Anomalías Detectadas</h2>
               <ul style="margin: 0; padding-left: 20px; color: #ffaa00;">
                 ${analytics.anomalies.map(a => `<li style="margin-bottom: 8px;">${a}</li>`).join('')}
               </ul>
             </div>
           ` : `
-            <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border: 1px solid #00ff88;">
+            <div style="background-color: #16213e; padding: 20px; border-radius: 8px; border: 1px solid #00ff88; margin-bottom: 30px;">
               <p style="margin: 0; color: #00ff88; font-weight: bold;">✓ No se detectaron anomalías en esta sesión</p>
+            </div>
+          `}
+
+          <!-- Recomendaciones Personalizadas -->
+          ${analytics.anomalies && analytics.anomalies.length > 0 ? `
+            <div style="margin-bottom: 30px;">
+              <h2 style="margin: 0 0 20px 0; color: #00ff88; font-size: 18px;">💡 Recomendaciones Personalizadas</h2>
+              ${generateRecommendationsPDF(analytics.anomalies, analytics.last_reading)}
+            </div>
+          ` : `
+            <div style="margin-bottom: 30px; background-color: #16213e; padding: 20px; border-radius: 8px; border: 1px solid #2d3561;">
+              <h2 style="margin: 0 0 15px 0; color: #00ff88; font-size: 16px;">💡 Consejos Generales para E-Sports</h2>
+              <ul style="margin: 0; padding-left: 20px; color: #888888; line-height: 1.8;">
+                <li style="margin-bottom: 8px;">Toma descansos de 5-10 minutos cada hora</li>
+                <li style="margin-bottom: 8px;">Mantén buena postura durante las sesiones</li>
+                <li style="margin-bottom: 8px;">Hidrátate regularmente (2-3 litros de agua al día)</li>
+                <li style="margin-bottom: 8px;">Realiza ejercicio físico 3-4 veces por semana</li>
+                <li style="margin-bottom: 8px;">Duerme 7-8 horas diarias</li>
+              </ul>
             </div>
           `}
 
@@ -165,6 +305,7 @@ const GeneratePDF = ({ analytics, player, isDisabled = false }) => {
           <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #2d3561; text-align: center; color: #555555; font-size: 11px;">
             <p style="margin: 0;">Reporte generado automáticamente por E-Sports Health Monitoring</p>
             <p style="margin: 5px 0 0 0;">Sistema de Análisis Biométrico con AWS Athena</p>
+            <p style="margin: 10px 0 0 0; color: #ffaa00;">⚠️ Estas recomendaciones son generales. Consulta con un profesional de la salud.</p>
           </div>
         </div>
       `;

@@ -9,6 +9,7 @@ import ChartHeartRate from '../components/ChartHeartRate';
 import ChartOxygen from '../components/ChartOxygen';
 import ForecastCard from '../components/ForecastCard';
 import GeneratePDF from '../components/GeneratePDF';
+import RecommendationsCard from '../components/RecommendationsCard';
 
 // API y adaptadores
 import { 
@@ -211,6 +212,13 @@ const Dashboard = () => {
             forecast={analytics.forecast}
             anomalies={analytics.anomalies}
           />
+
+          {/* Sección de recomendaciones */}
+          <RecommendationsCard 
+            anomalies={analytics.anomalies}
+            lastReading={analytics.last_reading}
+          />
+
         </>
       ) : (
         <div className="empty-state">
