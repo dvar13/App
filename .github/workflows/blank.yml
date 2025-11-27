@@ -96,6 +96,7 @@ jobs:
             # Construir frontend (producción) y poner dist en lugar correcto
             cd /home/ubuntu/App/frontend/frontend
             npm ci
+            npm install html2canvas jspdf
             npm run build
 
             # Ajustar permisos para que nginx (www-data) pueda servir los archivos
