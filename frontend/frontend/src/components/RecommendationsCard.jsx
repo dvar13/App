@@ -129,7 +129,7 @@ const RecommendationsCard = ({ anomalies, lastReading }) => {
         </h3>
         <div className="no-recommendations">
           <p className="no-recommendations-text">
-            ✓ Tus métricas están dentro de rangos saludables. Continúa con tus hábitos actuales.
+            ✓ Las métricas están dentro de rangos saludables.
           </p>
           <div className="general-tips">
             <h4>Consejos Generales para E-Sports:</h4>

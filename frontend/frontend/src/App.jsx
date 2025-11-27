@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import Dashboard from "./pages/Dashboard";
 import "./styles/global.css";
 
+/* global fetch */
+
 function App() {
   useEffect(() => {
     // Health check al iniciar
