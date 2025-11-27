@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_BASE = "http://localhost:8000";
+const API_BASE = "";
 
 // ---- Health check ----
 export async function healthCheck() {
